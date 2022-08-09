@@ -1,31 +1,33 @@
-// https://rust-cli.github.io/book/tutorial/impl-draft.html
+fn main () {
+// simple print
+    println!("hello world");
 
-#![allow(unused)] // what is this???
+// print with number or string
+    let x = 10;
 
-// i put dependencie in Cargo.toml
-use clap::Parser;
+    println!("the number is: {}", x);
+// print with other data type
 
-// search for a pattern in a file, display the lines that contain pattern
-#[derive(Parser)] // what is this???
-struct Cli {
-    // pattern to look for
-    pattern: String,
-    // path to the file to read
-    #[clap(parse(from_os_str))]
-    path: std::path::PathBuf,
-}
+    let xs = vec![3, 4, 5];
+    println!("the vector is: {:?}", xs);
+// if you want your own data type to be printable for debugging and logging -
+// in most cases, you can add #[derive(Debug)] above their definition
+// i tried...
+    // #[derive(Debug)]
+    // struct my_struct(i32);
+    // let xy = my_struct(2);
+    // println!("my struct is: {}", xy);
 
-fn main() {
-    let args = Cli::parse();
-    // i print an experiment...
-    println!("{}", &args);
+// Printing Errors
+    println!("this is information");
+    eprintln!("this is an error!!!!");
 
-    // i print the pattern
-    println!("{}", &args.pattern);
+//     A note on printing performance
+// Printing to the terminal is surprisingly slow! If you call things like println! in a loop, it can easily become a bottleneck in an otherwise fast program. To speed this up, there are two things you can do.
 
-    // i print the path
-    println!("{}", &args.path.display());
-    // let pattern = std::env::args().nth(1).expect("no pattern given");
-    // let path = std::env::args().nth(2).expect("no path given");
-    // println!("Hello, world!");
+// First, you might want to reduce the number of writes that actually “flush” to the terminal. println! tells the system to flush to the terminal every time, because it is common to print each new line. If you don’t need that, you can wrap your stdout handle in a BufWriter which by default buffers up to 8 kB. (You can still call .flush() on this BufWriter when you want to print immediately.)
+    
+
+
+
 }
